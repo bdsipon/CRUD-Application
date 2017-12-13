@@ -34,12 +34,6 @@ namespace Rental.Controllers
                 return HttpNotFound();
             return View(movie);
         }
-        // GET: Movies
-        public ActionResult Random()
-        {
-            var movie = new Movie() { Name = "Shrek!" };
         
-            return View(movie);
-        }
     }
 }
