@@ -16,27 +16,30 @@
 }
 
 <h2>Customers</h2>
+<p>
+    @Html.ActionLink("New Customer", "New", "Customers", null, new { @class = "btn btn-primary" })
+</p>
+
 <table class="table table-bordered table-hover">
-    <thead>
+<thead>
+    <tr>
+        <th>Movie</th>
+        <th>Genre</th>
+    </tr>
+
+</thead>
+        <tbody>
+    @foreach (var customer in Model)
+    {
         <tr>
-            <th>Movie</th>
-            <th>Genre</th>
+            <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
+            <td>Nothing</td>
+
         </tr>
 
-    </thead>
-    <tbody>
-        @foreach (var customer in Model)
-        {
-            <tr>
-                <td>@Html.ActionLink(customer.Name, "Edit", "Customers", new { id = customer.Id }, null)</td>
-                <td>Nothing</td>
-
-            </tr>
-
-
-        }
-    </tbody>
-</table>
-
+         
+    }
+        </tbody>
+    </table>
 
 
