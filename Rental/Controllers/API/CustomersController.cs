@@ -1,4 +1,6 @@
-﻿using Rental.Models;
+﻿using AutoMapper;
+using Rental.DTOs;
+using Rental.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,43 +18,42 @@ namespace Rental.Controllers.API
             _context = new ApplicationDbContext();
         }
         //GET/api/customers
-        public IEnumerable<Customer> GetCustomers()
+        public IEnumerable<CustomerDto> GetCustomers()
 
         {
-            return _context.Customers.ToList();
+            return _context.Customers.ToList().Select(Mapper.Map<Customer,CustomerDto>);
         }
 
         //GET/api/customers/1
-        public Customer GetCustomer(int id)
+        public IHttpActionResult GetCustomer(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
             if (customer == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-            return customer;
+                return NotFound();
+            return Ok( Mapper.Map<Customer,CustomerDto>(customer)) ;
         }
         //POST/api/customers
         [HttpPost]
-        public Customer CreateCustomer(Customer customer)
+        public IHttpActionResult CreateCustomer(CustomerDto customerDto)
         {
-            if (ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            if (!ModelState.IsValid)
+                return BadRequest();
+            var customer = Mapper.Map<CustomerDto, Customer>(customerDto);
             _context.Customers.Add(customer);
             _context.SaveChanges();
-            return customer;
+            customerDto.Id = customer.Id;
+            return Created(new Uri(Request.RequestUri+"/"+customer.Id),customerDto);
         }
         //PUT /api/customers/1
         [HttpPut]
-        public void updateCustomer(int id,Customer customer)
+        public void updateCustomer(int id,CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
-            if (customer == null)
+            if (customerInDb == null)
                 throw new HttpResponseException(HttpStatusCode.NotFound);
-            customerInDb.Name = customer.Name;
-            customerInDb.BirthDate = customer.BirthDate;
-            customerInDb.IsSubscribedToNewsletter = customer.IsSubscribedToNewsletter;
-            customerInDb.MembershipId = customer.MembershipId;
+            Mapper.Map(customerDto, customerInDb);
             _context.SaveChanges();
 
         }
