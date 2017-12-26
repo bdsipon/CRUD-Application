@@ -59,13 +59,14 @@ namespace Rental.Controllers.API
         }
         //DELETE/api/customers/1
         [HttpDelete]
-        public void DeleteCustomer(int id)
+        public IHttpActionResult DeleteCustomer(int id)
         {
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
             if (customerInDb == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+                return NotFound();
             _context.Customers.Remove(customerInDb);
             _context.SaveChanges();
+            return Ok();
         }
 
 
