@@ -25,8 +25,8 @@ namespace Rental.Controllers
         // GET: Customers
         public ActionResult Index()
         {
-            var Customers = _context.Customers.Include(c=>c.MembershipType).ToList();
-            return View(Customers);
+           
+            return View();
         }
 
         public ActionResult New()

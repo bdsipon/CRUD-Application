@@ -15,6 +15,7 @@ namespace Rental.DTOs
         public bool IsSubscribedToNewsletter { get; set; }
       
         public byte MembershipId { get; set; }
+        public MembershipTypeDto MembershipType { get; set; }
         public DateTime? BirthDate { get; set; }
     }
 }

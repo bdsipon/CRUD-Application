@@ -13,9 +13,13 @@ namespace Rental.App_Start
         public MappingProfile()
         {
             CreateMap<Customer, CustomerDto>();
-            CreateMap<CustomerDto, Customer>();
-            CreateMap<MovieDto, Movie>();
             CreateMap<Movie, MovieDto>();
+            CreateMap<MembershipType, MembershipTypeDto>();
+
+            CreateMap<CustomerDto, Customer>()
+                .ForMember(c => c.Id, opt => opt.Ignore());
+            CreateMap<MovieDto, Movie>()
+                .ForMember(c => c.Id, opt => opt.Ignore());
         }
     }
 }
